@@ -407,6 +407,2077 @@
             background: #1a1a2e;
             border-radius: 15px;
             width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #ff6b9d;
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #4a4a6d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            color: #ff6b9d;
+            font-size: 1.5rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: #a0d2ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 107, 157, 0.1);
+        }
+        
+        .modal-content {
+            padding: 20px;
+            max-height: calc(90vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .help-section {
+            margin-bottom: 25px;
+        }
+        
+        .help-section-title {
+            color: #a0d2ff;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #4a4a6d;
+            padding-bottom: 5px;
+        }
+        
+        .help-content {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .code-example {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border-left: 3px solid #ff6b9d;
+        }
+        
+        .help-list {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .help-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .help-list li:before {
+            content: "•";
+            color: #ff6b9d;
+            position: absolute;
+            left: -15px;
+        }
+        
+        /* PDF Viewer Styles */
+        .pdf-viewer-container {
+            width: 100%;
+            height: 500px;
+            margin: 15px 0;
+            border: 2px solid #ff6b9d;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .pdf-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .pdf-btn {
+            padding: 10px 15px;
+            background: rgba(255, 107, 157, 0.2);
+            border: 1px solid #ff6b9d;
+            border-radius: 5px;
+            color: #f0f0f0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .pdf-btn:hover {
+            background: rgba(255, 107, 157, 0.4);
+        }
+        
+        .pdf-notice {
+            background: rgba(160, 210, 255, 0.1);
+            border: 1px solid #a0d2ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #a0d2ff;
+            font-size: 0.9rem;
+        }
+        
+        .pdf-notice strong {
+            color: #ff6b9d;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .editor-section, .preview-section, .reference-section {
+                max-height: none;
+            }
+            
+            .pdf-viewer-container {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .pdf-controls {
+                flex-direction: column;
+            }
+            
+            .pdf-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+            
+            .pdf-viewer-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DDLC Script Maker</h1>
+            <div class="subtitle">Create DDLC mod scripts with ease - Based on MrEpic's DDLC Scripting Guide & Tormuse's Modding Guide</div>
+        </header>
+        
+        <div class="main-content">
+            <div class="editor-section">
+                <div class="section-title">
+                    <h2>Script Editor <button class="help-btn" data-help="editor">ⓘ</button></h2>
+                    <div style="font-size: 0.9rem; color: #aaa;">Lines: <span id="line-count">0</span></div>
+                </div>
+                
+                <div class="character-options">
+                    <div class="char-btn sayori active" data-character="sayori">Sayori</div>
+                    <div class="char-btn natsuki" data-character="natsuki">Natsuki</div>
+                    <div class="char-btn yuri" data-character="yuri">Yuri</div>
+                    <div class="char-btn monika" data-character="monika">Monika</div>
+                    <div class="char-btn mc" data-character="mc">MC</div>
+                    <div class="char-btn narrator" data-character="narrator">Narrator</div>
+                    <div class="char-btn unknown" data-character="unknown">???</div>
+                </div>
+                
+                <div class="tab-container">
+                    <div class="tab active" data-tab="dialogue">
+                        Dialogue <button class="help-btn" data-help="dialogue">ⓘ</button>
+                    </div>
+                    <div class="tab" data-tab="scene">
+                        Scene <button class="help-btn" data-help="scene">ⓘ</button>
+                    </div>
+                    <div class="tab" data-tab="music">
+                        Music <button class="help-btn" data-help="music">ⓘ</button>
+                    </div>
+                    <div class="tab" data-tab="special">
+                        Special <button class="help-btn" data-help="special">ⓘ</button>
+                    </div>
+                </div>
+                
+                <!-- Dialogue Tab -->
+                <div id="dialogue-tab" class="tab-content active">
+                    <div class="form-group">
+                        <label for="character-expression">
+                            Character Expression <button class="help-btn" data-help="expressions">ⓘ</button>
+                        </label>
+                        <div class="pose-expression-grid" id="expression-options">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="character-position">
+                            Position <button class="help-btn" data-help="positions">ⓘ</button>
+                        </label>
+                        <div class="position-grid" id="position-options">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dialogue-text">
+                            Dialogue Text <button class="help-btn" data-help="dialogue-text">ⓘ</button>
+                        </label>
+                        <textarea id="dialogue-text" placeholder="Enter dialogue here... Use [player] for player name. Use {w=0.5} for pauses, {nw} for no wait, {i} for italics."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zorder">
+                            Z-Order (Character Layer) <button class="help-btn" data-help="zorder">ⓘ</button>
+                        </label>
+                        <select id="zorder">
+                            <option value="2">2 - Default</option>
+                            <option value="3">3 - In Front</option>
+                            <option value="1">1 - Hidden/Behind</option>
+                            <option value="4">4 - Very Front</option>
+                            <option value="0">0 - Background</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transition">
+                            Transition Effect <button class="help-btn" data-help="transitions">ⓘ</button>
+                        </label>
+                        <select id="transition">
+                            <option value="">None</option>
+                            <option value="with dissolve">Dissolve</option>
+                            <option value="with dissolve_scene_full">Dissolve Scene Full</option>
+                            <option value="with wipeleft_scene">Wipe Left Scene</option>
+                            <option value="with hpunch">Horizontal Punch</option>
+                            <option value="with vpunch">Vertical Punch</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Scene Tab -->
+                <div id="scene-tab" class="tab-content">
+                    <div class="form-group">
+                        <label for="background">
+                            Background <button class="help-btn" data-help="backgrounds">ⓘ</button>
+                        </label>
+                        <select id="background">
+                            <option value="club_day">Club Day</option>
+                            <option value="club_day2">Club Day 2</option>
+                            <option value="residential_day">Residential Day</option>
+                            <option value="class_day">Class Day</option>
+                            <option value="corridor">Corridor</option>
+                            <option value="closet">Closet</option>
+                            <option value="bedroom">Bedroom</option>
+                            <option value="house">House</option>
+                            <option value="kitchen">Kitchen</option>
+                            <option value="black">Black</option>
+                            <option value="white">White</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scene-transition">
+                            Transition <button class="help-btn" data-help="scene-transitions">ⓘ</button>
+                        </label>
+                        <select id="scene-transition">
+                            <option value="with dissolve_scene_full">Dissolve Scene Full</option>
+                            <option value="with wipeleft_scene">Wipe Left Scene</option>
+                            <option value="with Dissolve(1.0)">Dissolve (1.0s)</option>
+                            <option value="with fade">Fade</option>
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Music Tab -->
+                <div id="music-tab" class="tab-content">
+                    <div class="form-group">
+                        <label for="music-action">
+                            Action <button class="help-btn" data-help="audio">ⓘ</button>
+                        </label>
+                        <select id="music-action">
+                            <option value="play music">Play Music</option>
+                            <option value="play sound">Play Sound Effect</option>
+                            <option value="stop music">Stop Music</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="music-track">
+                            Track / Sound Effect <button class="help-btn" data-help="audio-tracks">ⓘ</button>
+                        </label>
+                        <select id="music-track">
+                            <option value="t3">t3 - Main Theme (Club)</option>
+                            <option value="t1">t1 - Title Theme</option>
+                            <option value="t2">t2 - Ohayou Sayori!</option>
+                            <option value="t5">t5 - Okay, Everyone!</option>
+                            <option value="t6">t6 - Play With Me</option>
+                            <option value="t7">t7 - Poem Panic!</option>
+                            <option value="t8">t8 - Daijoubu!</option>
+                            <option value="t9">t9 - My Feelings</option>
+                            <option value="t10">t10 - My Confession</option>
+                            <option value="td">td - Sayo-nara</option>
+                            <option value="m1">m1 - Just Monika</option>
+                            <option value="page_turn">page_turn - Page Turn</option>
+                            <option value="glitch1">glitch1 - Glitch Sound</option>
+                            <option value="knock">knock - Knock</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fadeout">
+                            Fade Out (seconds) <button class="help-btn" data-help="fadeout">ⓘ</button>
+                        </label>
+                        <input type="number" id="fadeout" min="0" max="10" step="0.5" value="1.0">
+                    </div>
+                </div>
+                
+                <!-- Special Tab -->
+                <div id="special-tab" class="tab-content">
+                    <div class="form-group">
+                        <label for="special-action">
+                            Special Action <button class="help-btn" data-help="special-actions">ⓘ</button>
+                        </label>
+                        <select id="special-action">
+                            <option value="show screen tear">Show Screen Tear (Glitch)</option>
+                            <option value="show vignette">Show Vignette</option>
+                            <option value="show noise">Show Noise Effect</option>
+                            <option value="show layer master at heartbeat">Heartbeat Zoom Effect</option>
+                            <option value="menu">Menu (Player Choice)</option>
+                            <option value="python">Python Code Block</option>
+                            <option value="call showpoem">Show Poem</option>
+                            <option value="$ style.say_dialogue = style.edited">Glitch Font</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="special-params">
+                            Parameters <button class="help-btn" data-help="special-params">ⓘ</button>
+                        </label>
+                        <textarea id="special-params" placeholder="Enter parameters for the special action..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menu-options">
+                            Menu Options (for Menu action) <button class="help-btn" data-help="menus">ⓘ</button>
+                        </label>
+                        <textarea id="menu-options" placeholder="Enter each menu option on a new line. Example:&#10;Sayori&#10;Natsuki&#10;Yuri&#10;Monika"></textarea>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="add-line-btn">Add Line to Script <button class="help-btn" data-help="add-line">ⓘ</button></button>
+                    <button class="btn btn-secondary" id="clear-script-btn">Clear Script</button>
+                </div>
+                
+                <div id="script-lines" style="margin-top: 30px;">
+                    <div class="section-title">
+                        <h3>Script Lines</h3>
+                    </div>
+                    <div id="lines-container">
+                        <!-- Script lines will appear here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-section">
+                <div class="section-title">
+                    <h2>Script Preview <button class="help-btn" data-help="preview">ⓘ</button></h2>
+                    <button class="btn btn-secondary" id="copy-script-btn">Copy Script</button>
+                </div>
+                <pre class="script-preview" id="script-preview">
+# Your DDLC script will appear here
+# Lines added will show in Ren'Py format</pre>
+                
+                <div class="export-buttons">
+                    <button class="btn btn-secondary" id="export-rpy-btn">Export as .rpy</button>
+                    <button class="btn btn-secondary" id="export-txt-btn">Export as .txt</button>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <div class="section-title">
+                        <h3>Quick Reference <button class="help-btn" data-help="reference">ⓘ</button></h3>
+                    </div>
+                    <div class="reference-item">
+                        <div class="reference-title">Character Codes</div>
+                        <div class="reference-content">
+                            s = Sayori, n = Natsuki, y = Yuri, m = Monika, mc = Main Character
+                        </div>
+                    </div>
+                    <div class="reference-item">
+                        <div class="reference-title">Position Codes</div>
+                        <div class="reference-content">
+                            t11 = center (1 char), t21/t22 = left/right (2 chars), t31/t32/t33 = left/center/right (3 chars), t41/t42/t43/t44 = positions for 4 chars
+                        </div>
+                    </div>
+                    <div class="reference-item">
+                        <div class="reference-title">Formatting</div>
+                        <div class="reference-content">
+                            {w=0.5} = pause 0.5s, {nw} = no wait, {i} = italics, {fast} = fast text, [player] = player name
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Help Modal -->
+        <div class="modal-overlay" id="help-modal">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="modal-title" id="modal-title">Help</div>
+                    <button class="modal-close" id="modal-close">&times;</button>
+                </div>
+                <div class="modal-content" id="modal-content">
+                    <!-- Help content will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 30px; color: #aaa; font-size: 0.9rem;">
+            <p>DDLC Script Maker Tool - Based on MrEpic's DDLC Scripting Guide and Tormuse's Modding Guide</p>
+            <p>This tool generates Ren'Py script for DDLC mods. Use with a fresh DDLC install and appropriate RPY files.</p>
+        </footer>
+    </div>
+
+    <script>
+        // DDLC Script Data
+        const ddlcData = {
+            characters: {
+                sayori: { name: "Sayori", code: "s", color: "sayori" },
+                natsuki: { name: "Natsuki", code: "n", color: "natsuki" },
+                yuri: { name: "Yuri", code: "y", color: "yuri" },
+                monika: { name: "Monika", code: "m", color: "monika" },
+                mc: { name: "MC", code: "mc", color: "mc" },
+                narrator: { name: "Narrator", code: "", color: "narrator" },
+                unknown: { name: "???", code: "unknown", color: "unknown" }
+            },
+            
+            expressions: {
+                sayori: ["1a", "1b", "1c", "2a", "2b", "2c", "3a", "3b", "3c", "4a", "4b", "4c", "4r", "4s", "4t", "4u", "4v", "4w", "4x", "4y", "4z"],
+                natsuki: ["1a", "1b", "1c", "1d", "1e", "1f", "1g", "1h", "1i", "1j", "1k", "1l", "1m", "1n", "1o", "1p", "1q", "1r", "1s", "1t", "1u", "1v", "1w", "1x", "1y", "1z"],
+                yuri: ["1a", "1b", "1c", "1d", "1e", "1f", "1g", "1h", "1i", "1j", "1k", "1l", "1m", "1n", "1o", "1p", "1q", "1r", "1s", "1t", "1u", "1v", "1w", "1x", "1y", "1z"],
+                monika: ["1a", "1b", "1c", "1d", "1e", "1f", "1g", "1h", "1i", "1j", "1k", "1l", "1m", "1n", "1o", "1p", "1q", "1r", "1s", "1t", "1u", "1v", "1w", "1x", "1y", "1z", "5a"],
+                unknown: ["???"]
+            },
+            
+            positions: [
+                { code: "t11", name: "Center (1 character)", desc: "Single character center" },
+                { code: "t21", name: "Left (2 characters)", desc: "Left position for 2 characters" },
+                { code: "t22", name: "Right (2 characters)", desc: "Right position for 2 characters" },
+                { code: "t31", name: "Left (3 characters)", desc: "Left position for 3 characters" },
+                { code: "t32", name: "Center (3 characters)", desc: "Center position for 3 characters" },
+                { code: "t33", name: "Right (3 characters)", desc: "Right position for 3 characters" },
+                { code: "t41", name: "Far Left (4 characters)", desc: "Leftmost for 4 characters" },
+                { code: "t42", name: "Left Center (4 characters)", desc: "Left center for 4 characters" },
+                { code: "t43", name: "Right Center (4 characters)", desc: "Right center for 4 characters" },
+                { code: "t44", name: "Far Right (4 characters)", desc: "Rightmost for 4 characters" },
+                { code: "f11", name: "Focused Center", desc: "Focused center (zoomed in)" },
+                { code: "f21", name: "Focused Left", desc: "Focused left position" },
+                { code: "f22", name: "Focused Right", desc: "Focused right position" },
+                { code: "f31", name: "Focused Left (3)", desc: "Focused left for 3 characters" },
+                { code: "f32", name: "Focused Center (3)", desc: "Focused center for 3 characters" },
+                { code: "f33", name: "Focused Right (3)", desc: "Focused right for 3 characters" },
+                { code: "f41", name: "Focused Far Left", desc: "Focused leftmost for 4" },
+                { code: "f42", name: "Focused Left Center", desc: "Focused left center for 4" },
+                { code: "f43", name: "Focused Right Center", desc: "Focused right center for 4" },
+                { code: "f44", name: "Focused Far Right", desc: "Focused rightmost for 4" },
+                { code: "lhide", name: "Hide Left", desc: "Hide character moving left" },
+                { code: "thide", name: "Hide Center", desc: "Hide character (fade out)" }
+            ],
+            
+            backgrounds: [
+                "club_day", "club_day2", "residential_day", "class_day", "corridor",
+                "closet", "bedroom", "house", "kitchen", "notebook", "black", "white"
+            ],
+            
+            musicTracks: [
+                { code: "t1", name: "Title Theme" },
+                { code: "t2", name: "Ohayou Sayori!" },
+                { code: "t3", name: "Main Theme (Club)" },
+                { code: "t4", name: "Dreams of Love and Literature" },
+                { code: "t5", name: "Okay, Everyone!" },
+                { code: "t5b", name: "Okay, Everyone! (Sayori)" },
+                { code: "t5c", name: "Okay, Everyone! (Natsuki)" },
+                { code: "t5d", name: "Okay, Everyone! (Yuri)" },
+                { code: "t5e", name: "Okay, Everyone! (Monika)" },
+                { code: "t6", name: "Play With Me" },
+                { code: "t7", name: "Poem Panic!" },
+                { code: "t8", name: "Daijoubu!" },
+                { code: "t9", name: "My Feelings" },
+                { code: "t10", name: "My Confession" },
+                { code: "td", name: "Sayo-nara" },
+                { code: "m1", name: "Just Monika" },
+                { code: "mend", name: "I Still Love You" },
+                { code: "credits", name: "Your Reality" }
+            ],
+            
+            soundEffects: [
+                { code: "page_turn", name: "Page Turn" },
+                { code: "knock", name: "Knock" },
+                { code: "closet_open", name: "Closet Open" },
+                { code: "closet_close", name: "Closet Close" },
+                { code: "glitch1", name: "Glitch Sound 1" },
+                { code: "glitch2", name: "Glitch Sound 2" },
+                { code: "glitch3", name: "Glitch Sound 3" },
+                { code: "fall", name: "Fall Sound" },
+                { code: "giggle", name: "Giggle" },
+                { code: "slap", name: "Slap" },
+                { code: "stab", name: "Stab" }
+            ]
+        };
+
+        // Help Content
+        const helpContent = {
+            "editor": {
+                title: "Script Editor Overview",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">About the Script Editor</div>
+                        <div class="help-content">
+                            <p>This is the main editor where you create your DDLC mod script. The editor is divided into tabs for different types of script commands:</p>
+                            <ul class="help-list">
+                                <li><strong>Dialogue Tab:</strong> For character dialogue with expressions and positions</li>
+                                <li><strong>Scene Tab:</strong> For changing backgrounds and scene transitions</li>
+                                <li><strong>Music Tab:</strong> For playing music and sound effects</li>
+                                <li><strong>Special Tab:</strong> For menus, glitch effects, poems, and special commands</li>
+                            </ul>
+                            <p>Select a character from the top row, choose options in the active tab, then click "Add Line to Script" to add it to your script.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <div class="help-section-title">Character Types</div>
+                        <div class="help-content">
+                            <ul class="help-list">
+                                <li><strong>Sayori/Natsuki/Yuri/Monika:</strong> Club members with expressions and poses</li>
+                                <li><strong>MC:</strong> Main character - dialogue appears with player name</li>
+                                <li><strong>Narrator:</strong> Internal monologue (MC's thoughts)</li>
+                                <li><strong>??? (New!):</strong> Unknown/off-screen character (like when Sayori calls from off-screen)</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "dialogue": {
+                title: "Dialogue Tab Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Creating Dialogue</div>
+                        <div class="help-content">
+                            <p>Use this tab to create character dialogue lines. Each line includes:</p>
+                            <ul class="help-list">
+                                <li><strong>Character Expression:</strong> The character's pose and facial expression</li>
+                                <li><strong>Position:</strong> Where the character appears on screen</li>
+                                <li><strong>Dialogue Text:</strong> What the character says</li>
+                                <li><strong>Z-Order:</strong> Layer depth (higher = in front)</li>
+                                <li><strong>Transition Effect:</strong> How the character appears</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <div class="help-section-title">"???" Character Usage</div>
+                        <div class="help-content">
+                            <p>The "???" character is used when a character is off-screen or their identity is unknown. In DDLC, this is famously used when Sayori calls from off-screen:</p>
+                            <div class="code-example">
+                                "???"<br>
+                                "Heyyyy!!!!!"
+                            </div>
+                            <p>This creates dialogue with "???" as the speaker name. Use this for:</p>
+                            <ul class="help-list">
+                                <li>Off-screen dialogue</li>
+                                <li>Mysterious characters</li>
+                                <li>Before a character is revealed</li>
+                                <li>Glitchy/unknown speakers</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <div class="help-section-title">Formatting Tips</div>
+                        <div class="help-content">
+                            <p>Use these special codes in your dialogue text:</p>
+                            <ul class="help-list">
+                                <li><strong>[player]:</strong> Inserts the player's name</li>
+                                <li><strong>{w=0.5}:</strong> Pauses for 0.5 seconds</li>
+                                <li><strong>{nw}:</strong> No wait - continues to next line automatically</li>
+                                <li><strong>{fast}:</strong> Shows text instantly</li>
+                                <li><strong>{i}text{/i}:</strong> <i>Italic text</i></li>
+                                <li><strong>{b}text{/b}:</strong> <b>Bold text</b></li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "expressions": {
+                title: "Character Expressions Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Expression Guide (MrEpic's Official PDF)</div>
+                        <div class="pdf-notice">
+                            <strong>Note:</strong> This is MrEpic's official expression guide. The PDF below shows all character poses and expressions with visual references.
+                        </div>
+                        
+                        <div class="pdf-viewer-container">
+                            <iframe 
+                                class="pdf-viewer" 
+                                src="Guides/MrEpic.pdf#toolbar=1&navpanes=1&scrollbar=1&view=FitH"
+                                title="MrEpic's DDLC Expression Guide"
+                                frameborder="0"
+                            >
+                                Your browser does not support embedded PDFs. 
+                                <a href="Guides/MrEpic.pdf" target="_blank">Download the PDF instead</a>.
+                            </iframe>
+                        </div>
+                        
+                        <div class="pdf-controls">
+                            <button class="pdf-btn" onclick="zoomPDF(1.2)">Zoom In</button>
+                            <button class="pdf-btn" onclick="zoomPDF(0.8)">Zoom Out</button>
+                            <button class="pdf-btn" onclick="resetPDF()">Reset Zoom</button>
+                            <button class="pdf-btn" onclick="downloadPDF()">Download PDF</button>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <div class="help-section-title">Expression Format</div>
+                        <div class="help-content">
+                            <p>Character expressions follow the format: <strong>[pose][expression]</strong></p>
+                            <ul class="help-list">
+                                <li><strong>Pose:</strong> A number (1-4) representing body position</li>
+                                <li><strong>Expression:</strong> A letter (a-z) representing facial expression</li>
+                            </ul>
+                            <div class="code-example">
+                                Examples:<br>
+                                "1a" = Pose 1, Expression a (default)<br>
+                                "4x" = Pose 4, Expression x (Sayori's excited pose)<br>
+                                "2l" = Pose 2, Expression l
+                            </div>
+                            <p>Add "b" after pose number for casual outfits: <strong>1ba</strong> = Casual pose 1, expression a</p>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <div class="help-section-title">Common Expressions Quick Reference</div>
+                        <div class="help-content">
+                            <p><strong>Sayori:</strong> 1a=default, 4r=excited, 4s=worried, 4t=teasing, 4u=upset</p>
+                            <p><strong>Natsuki:</strong> 1a=default, 1c=annoyed, 1l=happy, 1q=angry, 1u=scared</p>
+                            <p><strong>Yuri:</strong> 1a=default, 2t=looking away, 3u=upset, 1s=shy, 2n=excited</p>
+                            <p><strong>Monika:</strong> 1a=default, 2m=thinking, 5a=special pose, 1l=happy, 2r=concerned</p>
+                            <p><strong>See the PDF above for full visual reference!</strong></p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "positions": {
+                title: "Character Positions Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Position Format</div>
+                        <div class="help-content">
+                            <p>Positions control where characters appear on screen:</p>
+                            <ul class="help-list">
+                                <li><strong>First letter:</strong> t=normal, f=focused (zoomed in)</li>
+                                <li><strong>First number:</strong> How many characters on screen (1-4)</li>
+                                <li><strong>Second number:</strong> Position from left to right (1-4)</li>
+                            </ul>
+                            <div class="code-example">
+                                Examples:<br>
+                                "t11" = Center (1 character)<br>
+                                "t21" = Left position (2 characters)<br>
+                                "t22" = Right position (2 characters)<br>
+                                "f32" = Focused center (3 characters)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <div class="help-section-title">Special Positions</div>
+                        <div class="help-content">
+                            <ul class="help-list">
+                                <li><strong>lhide:</strong> Hide character moving left</li>
+                                <li><strong>thide:</strong> Hide character (fade out)</li>
+                                <li><strong>f## positions:</strong> Focused/zoomed in for emphasis</li>
+                            </ul>
+                            <p>Use "show character at thide" followed by "hide character" to fade out properly.</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "dialogue-text": {
+                title: "Dialogue Text Formatting",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Text Formatting Codes</div>
+                        <div class="help-content">
+                            <p>Ren'Py supports special formatting codes in dialogue:</p>
+                            <div class="code-example">
+                                "Take it easy, [player].{w=0.5} I just want to talk.{nw}"<br>
+                                "{i}This is italic text{/i}{fast}"<br>
+                                "{cps=20}Slow text{cps}"<br>
+                                "Line 1{w=1.0}\\nLine 2"
+                            </div>
+                            <ul class="help-list">
+                                <li><strong>[player]:</strong> Player's name</li>
+                                <li><strong>{w=0.5}:</strong> Wait 0.5 seconds</li>
+                                <li><strong>{nw}:</strong> No wait (auto-advance)</li>
+                                <li><strong>{fast}:</strong> Show instantly</li>
+                                <li><strong>{cps=20}:</strong> Characters per second (speed)</li>
+                                <li><strong>{i}...{/i}:</strong> Italics</li>
+                                <li><strong>\\n:</strong> New line in same dialogue box</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "zorder": {
+                title: "Z-Order Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">What is Z-Order?</div>
+                        <div class="help-content">
+                            <p>Z-Order controls which character appears in front of others. Higher numbers appear in front of lower numbers.</p>
+                            <div class="code-example">
+                                show sayori 1a at t11 zorder 2<br>
+                                show natsuki 1a at t21 zorder 3  # Natsuki in front<br>
+                                show yuri 1a at t22 zorder 1     # Yuri behind
+                            </div>
+                            <ul class="help-list">
+                                <li><strong>0-1:</strong> Background/behind everything</li>
+                                <li><strong>2:</strong> Default layer</li>
+                                <li><strong>3:</strong> In front of default</li>
+                                <li><strong>4+:</strong> Very front</li>
+                            </ul>
+                            <p>Use zorder 1 with "thide" to hide characters: "show sayori at thide zorder 1"</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "transitions": {
+                title: "Transition Effects",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Character Transitions</div>
+                        <div class="help-content">
+                            <p>Transitions control how characters appear/disappear:</p>
+                            <div class="code-example">
+                                show sayori 1a at t11 with dissolve<br>
+                                show natsuki 1a at t21 with hpunch<br>
+                                hide monika with dissolve
+                            </div>
+                            <ul class="help-list">
+                                <li><strong>dissolve:</strong> Fade in/out smoothly</li>
+                                <li><strong>dissolve_scene_full:</strong> Full screen fade</li>
+                                <li><strong>wipeleft_scene:</strong> Wipe from right to left</li>
+                                <li><strong>hpunch:</strong> Screen shakes horizontally</li>
+                                <li><strong>vpunch:</strong> Screen shakes vertically</li>
+                                <li><strong>None:</strong> Appears instantly</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "scene": {
+                title: "Scene Tab Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Changing Scenes</div>
+                        <div class="help-content">
+                            <p>Use this tab to change backgrounds and create scene transitions:</p>
+                            <div class="code-example">
+                                # Start a scene<br>
+                                scene bg club_day with dissolve_scene_full<br>
+                                play music t3 fadeout 1<br><br>
+                                # Change scene<br>
+                                scene bg bedroom with wipeleft_scene
+                            </div>
+                            <p>Common backgrounds: club_day, residential_day, class_day, corridor, bedroom, house</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "backgrounds": {
+                title: "Backgrounds Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Available Backgrounds</div>
+                        <div class="help-content">
+                            <p>DDLC includes these standard backgrounds:</p>
+                            <ul class="help-list">
+                                <li><strong>club_day:</strong> Literature Club room (day)</li>
+                                <li><strong>club_day2:</strong> Alternative club room (50% chance)</li>
+                                <li><strong>residential_day:</strong> Residential street</li>
+                                <li><strong>class_day:</strong> Classroom</li>
+                                <li><strong>corridor:</strong> School hallway</li>
+                                <li><strong>closet:</strong> Storage closet</li>
+                                <li><strong>bedroom:</strong> MC's bedroom</li>
+                                <li><strong>house:</strong> Sayori's house</li>
+                                <li><strong>kitchen:</strong> Kitchen</li>
+                                <li><strong>black/white:</strong> Solid colors</li>
+                            </ul>
+                            <p>You can add custom backgrounds by placing images in the "mod_assets" folder.</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "scene-transitions": {
+                title: "Scene Transitions",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Scene Transition Effects</div>
+                        <div class="help-content">
+                            <p>Scene transitions control how the entire screen changes:</p>
+                            <div class="code-example">
+                                # Start chapter<br>
+                                scene bg club_day with dissolve_scene_full<br><br>
+                                # Change scene<br>
+                                scene bg bedroom with wipeleft_scene<br><br>
+                                # End chapter<br>
+                                scene black with dissolve_scene_full
+                            </div>
+                            <ul class="help-list">
+                                <li><strong>dissolve_scene_full:</strong> Standard fade (recommended)</li>
+                                <li><strong>wipeleft_scene:</strong> Wipe left (common in DDLC)</li>
+                                <li><strong>Dissolve(1.0):</strong> Custom duration dissolve</li>
+                                <li><strong>fade:</strong> Simple fade</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "music": {
+                title: "Music Tab Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Audio Commands</div>
+                        <div class="help-content">
+                            <p>Use this tab to control music and sound effects:</p>
+                            <div class="code-example">
+                                # Play background music<br>
+                                play music t3 fadeout 1<br><br>
+                                # Play sound effect<br>
+                                play sound page_turn<br><br>
+                                # Stop music<br>
+                                stop music fadeout 2.0
+                            </div>
+                            <p><strong>play music:</strong> Looping background music</p>
+                            <p><strong>play sound:</strong> One-time sound effect</p>
+                            <p><strong>stop music:</strong> Stops current music</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "audio": {
+                title: "Audio Basics",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Audio in Ren'Py</div>
+                        <div class="help-content">
+                            <p>Ren'Py supports two audio channels:</p>
+                            <ul class="help-list">
+                                <li><strong>music:</strong> For background music (loops automatically)</li>
+                                <li><strong>sound:</strong> For sound effects (plays once)</li>
+                            </ul>
+                            <div class="code-example">
+                                # Music fades out as new music fades in<br>
+                                play music t2 fadeout 1.0<br><br>
+                                # Play multiple sounds<br>
+                                play sound knock<br>
+                                play sound closet_open
+                            </div>
+                            <p>Use "fadeout" to smoothly transition between tracks.</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "audio-tracks": {
+                title: "Audio Tracks",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">DDLC Audio Tracks</div>
+                        <div class="help-content">
+                            <p><strong>Music Tracks:</strong></p>
+                            <ul class="help-list">
+                                <li><strong>t1:</strong> Title Theme</li>
+                                <li><strong>t3:</strong> Main Theme (Club)</li>
+                                <li><strong>t5:</strong> Okay, Everyone! (Poem sharing)</li>
+                                <li><strong>t6:</strong> Play With Me</li>
+                                <li><strong>td:</strong> Sayo-nara (Sayori's theme)</li>
+                                <li><strong>m1:</strong> Just Monika</li>
+                            </ul>
+                            <p><strong>Sound Effects:</strong></p>
+                            <ul class="help-list">
+                                <li><strong>page_turn:</strong> Page turning</li>
+                                <li><strong>knock:</strong> Door knocking</li>
+                                <li><strong>glitch1/2/3:</strong> Glitch sounds</li>
+                                <li><strong>fall:</strong> Falling sound</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "fadeout": {
+                title: "Fade Out Parameter",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Fade Out Timing</div>
+                        <div class="help-content">
+                            <p>The fadeout parameter controls how long it takes for audio to fade out when changing tracks:</p>
+                            <div class="code-example">
+                                # Music fades out over 2 seconds<br>
+                                stop music fadeout 2.0<br><br>
+                                # New music starts immediately<br>
+                                play music t3<br><br>
+                                # Old music fades out over 1 second as new music starts<br>
+                                play music t2 fadeout 1.0
+                            </div>
+                            <p><strong>Recommended values:</strong></p>
+                            <ul class="help-list">
+                                <li><strong>1.0:</strong> Standard scene change</li>
+                                <li><strong>2.0:</strong> Chapter/significant change</li>
+                                <li><strong>0.5:</strong> Quick transition</li>
+                                <li><strong>0:</strong> Instant cut</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "special": {
+                title: "Special Tab Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Special Actions</div>
+                        <div class="help-content">
+                            <p>This tab contains advanced DDLC-specific commands:</p>
+                            <ul class="help-list">
+                                <li><strong>Glitch Effects:</strong> Screen tear, vignette, noise</li>
+                                <li><strong>Menus:</strong> Player choice dialogs</li>
+                                <li><strong>Poems:</strong> Call poem screens</li>
+                                <li><strong>Python Code:</strong> Custom Python scripting</li>
+                                <li><strong>Heartbeat Effect:</strong> Zoom with heartbeat sound</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "special-actions": {
+                title: "Special Actions Details",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Available Special Actions</div>
+                        <div class="help-content">
+                            <ul class="help-list">
+                                <li><strong>show screen tear:</strong> Glitch effect (like Sayori's death)</li>
+                                <li><strong>show vignette:</strong> Darkens screen corners</li>
+                                <li><strong>show noise:</strong> Adds TV static overlay</li>
+                                <li><strong>show layer master at heartbeat:</strong> Zoom + heartbeat sound</li>
+                                <li><strong>menu:</strong> Creates player choice menu</li>
+                                <li><strong>python:</strong> Executes Python code block</li>
+                                <li><strong>call showpoem:</strong> Shows poem screen</li>
+                                <li><strong>$ style.say_dialogue = style.edited:</strong> Glitch font</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "special-params": {
+                title: "Special Action Parameters",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Parameter Examples</div>
+                        <div class="help-content">
+                            <p>Enter parameters based on the selected action:</p>
+                            <div class="code-example">
+                                # Screen tear (20, 0.1, 0.1, 0, 40)<br>
+                                show screen tear(20, 0.1, 0.1, 0, 40)<br><br>
+                                # Vignette with alpha<br>
+                                show vignette:<br>
+                                    alpha 0.5<br><br>
+                                # Python code<br>
+                                python:<br>
+                                    bestgirl = "Sayori"<br>
+                                    renpy.jump("happy_ending")<br><br>
+                                # Show poem<br>
+                                call showpoem(poem_s1, track="bgm/5_sayori.ogg")
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "menus": {
+                title: "Creating Menus",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Player Choice Menus</div>
+                        <div class="help-content">
+                            <p>Menus allow players to make choices that affect the story:</p>
+                            <div class="code-example">
+                                menu:<br>
+                                    mc "Who should I talk to?"<br>
+                                    <br>
+                                    "Sayori":<br>
+                                        $ chosen = "Sayori"<br>
+                                        jump talk_sayori<br>
+                                    <br>
+                                    "Monika":<br>
+                                        $ chosen = "Monika"<br>
+                                        jump talk_monika
+                            </div>
+                            <p><strong>Format:</strong> Each option on a new line in the "Menu Options" field.</p>
+                            <p><strong>Variables:</strong> Use "$ variable = value" to store player choice.</p>
+                            <p><strong>Branching:</strong> Use "jump label_name" to go to different story paths.</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "add-line": {
+                title: "Adding Script Lines",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">How to Add Lines</div>
+                        <div class="help-content">
+                            <p>Follow these steps to add script lines:</p>
+                            <ol class="help-list" style="list-style-type: decimal; padding-left: 30px;">
+                                <li>Select a character from the top row</li>
+                                <li>Choose the appropriate tab for your command</li>
+                                <li>Configure all options in the tab</li>
+                                <li>Click "Add Line to Script"</li>
+                                <li>Review the generated code in the Preview panel</li>
+                            </ol>
+                            <p><strong>Tip:</strong> You can edit script lines after adding them by deleting and recreating them.</p>
+                            <p><strong>Tip:</strong> Use the "???" character for off-screen dialogue like Sayori's "Heyyyy!!!!!"</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "preview": {
+                title: "Script Preview Help",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Preview Features</div>
+                        <div class="help-content">
+                            <p>The Preview panel shows your script in Ren'Py format:</p>
+                            <ul class="help-list">
+                                <li><strong>Real-time updates:</strong> Changes appear immediately</li>
+                                <li><strong>Proper formatting:</strong> Correct indentation and syntax</li>
+                                <li><strong>Copy button:</strong> Copy entire script to clipboard</li>
+                                <li><strong>Export buttons:</strong> Save as .rpy or .txt files</li>
+                            </ul>
+                            <div class="code-example">
+                                # Generated script includes:<br>
+                                - Label definition (label start:)<br>
+                                - Proper indentation (4 spaces)<br>
+                                - Correct Ren'Py syntax<br>
+                                - Return statement at end
+                            </div>
+                            <p>Copy the preview text and paste it into your DDLC mod's .rpy files.</p>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "reference": {
+                title: "Quick Reference Guide",
+                content: `
+                    <div class="help-section">
+                        <div class="help-section-title">Essential DDLC Scripting</div>
+                        <div class="help-content">
+                            <p><strong>Character Codes:</strong></p>
+                            <ul class="help-list">
+                                <li>s = Sayori</li>
+                                <li>n = Natsuki</li>
+                                <li>y = Yuri</li>
+                                <li>m = Monika</li>
+                                <li>mc = Main Character</li>
+                                <li>unknown = ??? (off-screen)</li>
+                            </ul>
+                            
+                            <p><strong>Common Positions:</strong></p>
+                            <ul class="help-list">
+                                <li>t11 = Center (1 character)</li>
+                                <li>t21/t22 = Left/Right (2 characters)</li>
+                                <li>t31/t32/t33 = Left/Center/Right (3 characters)</li>
+                                <li>t41-44 = Positions for 4 characters</li>
+                                <li>f## = Focused/zoomed position</li>
+                            </ul>
+                            
+                            <p><strong>Useful Commands:</strong></p>
+                            <div class="code-example">
+                                # Start scene<br>
+                                scene bg club_day with dissolve_scene_full<br>
+                                play music t3 fadeout 1<br><br>
+                                # End scene<br>
+                                scene black with dissolve_scene_full<br>
+                                return
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Application State
+        const state = {
+            currentCharacter: "sayori",
+            currentExpression: "1a",
+            currentPosition: "t11",
+            scriptLines: [],
+            lineCounter: 0
+        };
+
+        // DOM Elements
+        const charButtons = document.querySelectorAll('.char-btn');
+        const tabs = document.querySelectorAll('.tab');
+        const expressionOptions = document.getElementById('expression-options');
+        const positionOptions = document.getElementById('position-options');
+        const addLineBtn = document.getElementById('add-line-btn');
+        const clearScriptBtn = document.getElementById('clear-script-btn');
+        const copyScriptBtn = document.getElementById('copy-script-btn');
+        const exportRpyBtn = document.getElementById('export-rpy-btn');
+        const exportTxtBtn = document.getElementById('export-txt-btn');
+        const scriptPreview = document.getElementById('script-preview');
+        const linesContainer = document.getElementById('lines-container');
+        const lineCountElement = document.getElementById('line-count');
+        
+        // Modal Elements
+        const helpModal = document.getElementById('help-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const modalClose = document.getElementById('modal-close');
+
+        // PDF Viewer Functions
+        function zoomPDF(factor) {
+            const pdfFrame = document.querySelector('.pdf-viewer');
+            if (!pdfFrame) return;
+            
+            // Get current view parameters
+            const currentSrc = pdfFrame.src;
+            const zoomMatch = currentSrc.match(/zoom=(\d+)/);
+            let currentZoom = zoomMatch ? parseInt(zoomMatch[1]) : 100;
+            
+            // Calculate new zoom
+            currentZoom = Math.max(50, Math.min(200, Math.round(currentZoom * factor)));
+            
+            // Update URL with new zoom
+            if (currentSrc.includes('zoom=')) {
+                pdfFrame.src = currentSrc.replace(/zoom=\d+/, `zoom=${currentZoom}`);
+            } else {
+                pdfFrame.src = currentSrc + (currentSrc.includes('?') ? '&' : '?') + `zoom=${currentZoom}`;
+            }
+        }
+
+        function resetPDF() {
+            const pdfFrame = document.querySelector('.pdf-viewer');
+            if (!pdfFrame) return;
+            
+            // Reset to original URL
+            pdfFrame.src = "Guides/MrEpic.pdf#toolbar=1&navpanes=1&scrollbar=1&view=FitH";
+        }
+
+        function downloadPDF() {
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = "Guides/MrEpic.pdf";
+            link.download = "MrEpic_DDLC_Expression_Guide.pdf";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Initialize
+        function init() {
+            // Set up character buttons
+            charButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    charButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    state.currentCharacter = btn.dataset.character;
+                    updateExpressionOptions();
+                });
+            });
+            
+            // Set up tabs
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+            
+            // Initialize expression options
+            updateExpressionOptions();
+            
+            // Initialize position options
+            updatePositionOptions();
+            
+            // Set up help buttons
+            document.querySelectorAll('.help-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const helpKey = btn.dataset.help;
+                    showHelp(helpKey);
+                });
+            });
+            
+            // Set up modal close button
+            modalClose.addEventListener('click', () => {
+                helpModal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            helpModal.addEventListener('click', (e) => {
+                if (e.target === helpModal) {
+                    helpModal.classList.remove('active');
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && helpModal.classList.contains('active')) {
+                    helpModal.classList.remove('active');
+                }
+            });
+            
+            // Load any saved script
+            loadScriptFromStorage();
+            
+            // Add example lines if empty
+            if (state.scriptLines.length === 0) {
+                addExampleLines();
+            }
+            
+            updateScriptPreview();
+            updateLineCount();
+            
+            // Set up event listeners
+            addLineBtn.addEventListener('click', addLineToScript);
+            clearScriptBtn.addEventListener('click', clearScript);
+            copyScriptBtn.addEventListener('click', copyScriptToClipboard);
+            exportRpyBtn.addEventListener('click', exportScriptAsRpy);
+            exportTxtBtn.addEventListener('click', exportScriptAsTxt);
+            
+            // Auto-save script when leaving page
+            window.addEventListener('beforeunload', saveScriptToStorage);
+        }
+
+        // Update expression options based on selected character
+        function updateExpressionOptions() {
+            expressionOptions.innerHTML = '';
+            const expressions = ddlcData.expressions[state.currentCharacter] || ddlcData.expressions.sayori;
+            
+            expressions.forEach(expr => {
+                const option = document.createElement('div');
+                option.className = `pose-option ${expr === state.currentExpression ? 'selected' : ''}`;
+                option.textContent = expr;
+                option.dataset.expression = expr;
+                
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.pose-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    state.currentExpression = expr;
+                });
+                
+                expressionOptions.appendChild(option);
+            });
+        }
+
+        // Update position options
+        function updatePositionOptions() {
+            positionOptions.innerHTML = '';
+            
+            ddlcData.positions.forEach(pos => {
+                const option = document.createElement('div');
+                option.className = `position-option ${pos.code === state.currentPosition ? 'selected' : ''}`;
+                option.innerHTML = `<strong>${pos.code}</strong><br><small>${pos.name}</small>`;
+                option.dataset.position = pos.code;
+                option.title = pos.desc;
+                
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.position-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    state.currentPosition = pos.code;
+                });
+                
+                positionOptions.appendChild(option);
+            });
+        }
+
+        // Show help modal
+        function showHelp(helpKey) {
+            const content = helpContent[helpKey];
+            if (!content) {
+                console.warn(`No help content for key: ${helpKey}`);
+                return;
+            }
+            
+            modalTitle.textContent = content.title;
+            modalContent.innerHTML = content.content;
+            helpModal.classList.add('active');
+            
+            // Special handling for PDF viewer - make sure it's loaded properly
+            if (helpKey === 'expressions') {
+                // Give a small delay for the iframe to render
+                setTimeout(() => {
+                    const pdfFrame = document.querySelector('.pdf-viewer');
+                    if (pdfFrame) {
+                        pdfFrame.src = "Guides/MrEpic.pdf#toolbar=1&navpanes=1&scrollbar=1&view=FitH";
+                    }
+                }, 100);
+            }
+        }
+
+        // Add a line to the script
+        function addLineToScript() {
+            const activeTab = document.querySelector('.tab.active').dataset.tab;
+            let lineContent = '';
+            let lineType = 'dialogue';
+            let characterClass = state.currentCharacter;
+            
+            if (activeTab === 'dialogue') {
+                const dialogueText = document.getElementById('dialogue-text').value.trim();
+                const zorder = document.getElementById('zorder').value;
+                const transition = document.getElementById('transition').value;
+                const character = ddlcData.characters[state.currentCharacter];
+                
+                if (!dialogueText && state.currentCharacter !== 'narrator' && state.currentCharacter !== 'unknown') {
+                    alert('Please enter dialogue text');
+                    return;
+                }
+                
+                if (state.currentCharacter === 'narrator') {
+                    // Narrator line (MC's thoughts)
+                    lineContent = `"${dialogueText}"`;
+                    lineType = 'narrator';
+                } else if (state.currentCharacter === 'mc') {
+                    // MC speaking
+                    lineContent = `mc "${dialogueText}"`;
+                    lineType = 'mc';
+                } else if (state.currentCharacter === 'unknown') {
+                    // ??? character (off-screen/mysterious)
+                    lineContent = `"???"\n"${dialogueText}"`;
+                    lineType = 'unknown';
+                    characterClass = 'unknown';
+                } else {
+                    // Regular character speaking with expression and position
+                    const showLine = `show ${state.currentCharacter} ${state.currentExpression} at ${state.currentPosition} zorder ${zorder}${transition ? ' ' + transition : ''}`;
+                    const dialogueLine = `${character.code} "${dialogueText}"`;
+                    
+                    lineContent = `${showLine}\n${dialogueLine}`;
+                    lineType = state.currentCharacter;
+                    
+                    // Also add a return to normal position if it's a focused position
+                    if (state.currentPosition.startsWith('f')) {
+                        const normalPosition = 't' + state.currentPosition.substring(1);
+                        const returnLine = `show ${state.currentCharacter} ${state.currentExpression} at ${normalPosition} zorder 2`;
+                        lineContent += `\n${returnLine}`;
+                    }
+                }
+                
+                // Clear dialogue text
+                document.getElementById('dialogue-text').value = '';
+                
+            } else if (activeTab === 'scene') {
+                const background = document.getElementById('background').value;
+                const sceneTransition = document.getElementById('scene-transition').value;
+                
+                lineContent = `scene bg ${background}${sceneTransition ? ' ' + sceneTransition : ''}`;
+                lineType = 'scene';
+                characterClass = 'scene';
+                
+            } else if (activeTab === 'music') {
+                const musicAction = document.getElementById('music-action').value;
+                const musicTrack = document.getElementById('music-track').value;
+                const fadeout = document.getElementById('fadeout').value;
+                
+                if (musicAction === 'stop music') {
+                    lineContent = `stop music${fadeout > 0 ? ` fadeout ${fadeout}` : ''}`;
+                } else {
+                    lineContent = `${musicAction} ${musicTrack}${fadeout > 0 ? ` fadeout ${fadeout}` : ''}`;
+                }
+                lineType = 'music';
+                characterClass = 'music';
+                
+            } else if (activeTab === 'special') {
+                const specialAction = document.getElementById('special-action').value;
+                const specialParams = document.getElementById('special-params').value;
+                const menuOptions = document.getElementById('menu-options').value;
+                
+                if (specialAction === 'menu') {
+                    // Create a menu
+                    const options = menuOptions.split('\n').filter(opt => opt.trim() !== '');
+                    if (options.length === 0) {
+                        alert('Please enter at least one menu option');
+                        return;
+                    }
+                    
+                    lineContent = `menu:\n    mc "Choose an option:"\n    \n`;
+                    
+                    options.forEach(option => {
+                        lineContent += `    "${option.trim()}":\n        $ chosen_option = "${option.trim()}"\n        mc "I choose ${option.trim()}!"\n`;
+                    });
+                    
+                    // Clear menu options
+                    document.getElementById('menu-options').value = '';
+                } else if (specialAction === 'call showpoem') {
+                    lineContent = `call showpoem(${specialParams || 'poem_example'})`;
+                } else {
+                    lineContent = `${specialAction}${specialParams ? ' ' + specialParams : ''}`;
+                }
+                
+                lineType = 'special';
+                characterClass = 'special';
+                
+                // Clear special params
+                document.getElementById('special-params').value = '';
+            }
+            
+            // Add line to state
+            const lineId = state.lineCounter++;
+            state.scriptLines.push({
+                id: lineId,
+                content: lineContent,
+                type: lineType,
+                characterClass: characterClass
+            });
+            
+            // Update UI
+            updateScriptPreview();
+            updateLinesContainer();
+            updateLineCount();
+            
+            // Scroll to bottom of preview
+            scriptPreview.scrollTop = scriptPreview.scrollHeight;
+        }
+
+        // Update the script preview
+        function updateScriptPreview() {
+            let previewContent = '# DDLC Script Generated with DDLC Script Maker\n';
+            previewContent += '# Based on MrEpic\'s DDLC Scripting Guide & Tormuse\'s Modding Guide\n\n';
+            
+            // Add initial setup for a new scene
+            if (state.scriptLines.length > 0) {
+                previewContent += 'label start:\n    # Start of your scene\n\n';
+            }
+            
+            state.scriptLines.forEach(line => {
+                const lines = line.content.split('\n');
+                lines.forEach(l => {
+                    previewContent += `    ${l}\n`;
+                });
+                previewContent += '\n';
+            });
+            
+            // Add return statement if we have content
+            if (state.scriptLines.length > 0) {
+                previewContent += '    return\n';
+            }
+            
+            scriptPreview.textContent = previewContent;
+            
+            // Save to storage
+            saveScriptToStorage();
+        }
+
+        // Update the lines container
+        function updateLinesContainer() {
+            linesContainer.innerHTML = '';
+            
+            state.scriptLines.forEach((line, index) => {
+                const lineElement = document.createElement('div');
+                lineElement.className = `script-line ${line.characterClass}`;
+                lineElement.innerHTML = `
+                    <div class="line-header">
+                        <span>Line ${index + 1} - ${line.type.toUpperCase()}</span>
+                        <span>ID: ${line.id}</span>
+                    </div>
+                    <div class="line-content">${line.content.replace(/\n/g, '<br>')}</div>
+                    <button class="delete-line" data-id="${line.id}">×</button>
+                `;
+                
+                linesContainer.appendChild(lineElement);
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-line').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.dataset.id);
+                    deleteLine(id);
+                });
+            });
+        }
+
+        // Delete a line from the script
+        function deleteLine(id) {
+            state.scriptLines = state.scriptLines.filter(line => line.id !== id);
+            updateScriptPreview();
+            updateLinesContainer();
+            updateLineCount();
+        }
+
+        // Update line count display
+        function updateLineCount() {
+            lineCountElement.textContent = state.scriptLines.length;
+        }
+
+        // Clear the entire script
+        function clearScript() {
+            if (confirm('Are you sure you want to clear the entire script?')) {
+                state.scriptLines = [];
+                state.lineCounter = 0;
+                updateScriptPreview();
+                updateLinesContainer();
+                updateLineCount();
+                saveScriptToStorage();
+            }
+        }
+
+        // Copy script to clipboard
+        function copyScriptToClipboard() {
+            navigator.clipboard.writeText(scriptPreview.textContent)
+                .then(() => {
+                    // Show feedback
+                    const originalText = copyScriptBtn.textContent;
+                    copyScriptBtn.textContent = 'Copied!';
+                    copyScriptBtn.style.background = '#06d6a0';
+                    
+                    setTimeout(() => {
+                        copyScriptBtn.textContent = originalText;
+                        copyScriptBtn.style.background = '';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy script to clipboard');
+                });
+        }
+
+        // Export script as .rpy file
+        function exportScriptAsRpy() {
+            const scriptContent = scriptPreview.textContent;
+            const blob = new Blob([scriptContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ddlc_script_generated.rpy';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Export script as .txt file
+        function exportScriptAsTxt() {
+            const scriptContent = scriptPreview.textContent;
+            const blob = new Blob([scriptContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ddlc_script_generated.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Save script to localStorage
+        function saveScriptToStorage() {
+            try {
+                const scriptData = {
+                    lines: state.scriptLines,
+                    counter: state.lineCounter
+                };
+                localStorage.setItem('ddlcScriptMakerData', JSON.stringify(scriptData));
+            } catch (e) {
+                console.warn('Could not save script to localStorage:', e);
+            }
+        }
+
+        // Load script from localStorage
+        function loadScriptFromStorage() {
+            try {
+                const savedData = localStorage.getItem('ddlcScriptMakerData');
+                if (savedData) {
+                    const scriptData = JSON.parse(savedData);
+                    state.scriptLines = scriptData.lines || [];
+                    state.lineCounter = scriptData.counter || 0;
+                }
+            } catch (e) {
+                console.warn('Could not load script from localStorage:', e);
+            }
+        }
+
+        // Add example lines for first-time users
+        function addExampleLines() {
+            // Example scene setup
+            state.scriptLines.push({
+                id: state.lineCounter++,
+                content: 'scene bg club_day with dissolve_scene_full\nplay music t3 fadeout 1',
+                type: 'scene',
+                characterClass: 'scene'
+            });
+            
+            // Example dialogue
+            state.scriptLines.push({
+                id: state.lineCounter++,
+                content: '"I come into the club to find all the girls arguing."',
+                type: 'narrator',
+                characterClass: 'narrator'
+            });
+            
+            state.scriptLines.push({
+                id: state.lineCounter++,
+                content: 'show sayori 1a at t11 zorder 2\ns "[player]! I\'m so glad you\'re here!"',
+                type: 'sayori',
+                characterClass: 'sayori'
+            });
+            
+            // Example ??? character usage (off-screen Sayori)
+            state.scriptLines.push({
+                id: state.lineCounter++,
+                content: '"???"\n"Heyyyy!!!!!"',
+                type: 'unknown',
+                characterClass: 'unknown'
+            });
+            
+            // Example menu
+            state.scriptLines.push({
+                id: state.lineCounter++,
+                content: 'menu:\n    mc "Who should I talk to?"\n    \n    "Sayori":\n        $ chosen_girl = "Sayori"\n        mc "I\'ll talk to Sayori."\n    \n    "Monika":\n        $ chosen_girl = "Monika"\n        mc "I\'ll talk to Monika."',
+                type: 'special',
+                characterClass: 'special'
+            });
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>        }
+        
+        h1 {
+            color: #ff6b9d;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+        
+        .subtitle {
+            color: #a0d2ff;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .editor-section, .preview-section, .reference-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid #4a4a6d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .reference-section {
+            flex: 0 0 300px;
+        }
+        
+        .section-title {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a4a6d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .help-btn {
+            background: none;
+            border: none;
+            color: #a0d2ff;
+            cursor: help;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .help-btn:hover {
+            background: rgba(160, 210, 255, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #a0d2ff;
+            font-weight: bold;
+        }
+        
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #4a4a6d;
+            border-radius: 8px;
+            color: #f0f0f0;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .character-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .char-btn {
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #4a4a6d;
+            border-radius: 8px;
+            color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .char-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .char-btn.active {
+            border-color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.1);
+            box-shadow: 0 0 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .sayori { color: #ff9ac5; }
+        .natsuki { color: #ff9a9d; }
+        .yuri { color: #c79fff; }
+        .monika { color: #9affc7; }
+        .mc { color: #a0d2ff; }
+        .narrator { color: #cccccc; }
+        .unknown { color: #ff9a5e; }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: #ff6b9d;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #ff4b8d;
+            box-shadow: 0 0 15px rgba(255, 107, 157, 0.5);
+        }
+        
+        .btn-secondary {
+            background: #4a4a6d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a5a7d;
+        }
+        
+        .script-line {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border-left: 4px solid #4a4a6d;
+            position: relative;
+        }
+        
+        .script-line.sayori { border-left-color: #ff9ac5; }
+        .script-line.natsuki { border-left-color: #ff9a9d; }
+        .script-line.yuri { border-left-color: #c79fff; }
+        .script-line.monika { border-left-color: #9affc7; }
+        .script-line.mc { border-left-color: #a0d2ff; }
+        .script-line.narrator { border-left-color: #cccccc; }
+        .script-line.unknown { border-left-color: #ff9a5e; }
+        .script-line.scene { border-left-color: #ffd166; }
+        .script-line.music { border-left-color: #06d6a0; }
+        
+        .line-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .line-content {
+            font-size: 1.1rem;
+            color: #f0f0f0;
+            white-space: pre-wrap;
+        }
+        
+        .delete-line {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff6b6b;
+            border: none;
+            border-radius: 4px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .delete-line:hover {
+            background: rgba(255, 0, 0, 0.4);
+        }
+        
+        .script-preview {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 300px;
+            max-height: 60vh;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        
+        .reference-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border-left: 4px solid #4a4a6d;
+        }
+        
+        .reference-title {
+            font-weight: bold;
+            color: #a0d2ff;
+            margin-bottom: 8px;
+        }
+        
+        .reference-content {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4a4a6d;
+            padding-bottom: 10px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            border-radius: 8px 8px 0 0;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tab.active {
+            background: #4a4a6d;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .pose-expression-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .pose-option {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .pose-option:hover {
+            background: rgba(255, 107, 157, 0.1);
+        }
+        
+        .pose-option.selected {
+            border-color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.2);
+        }
+        
+        .position-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .position-option {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .position-option:hover {
+            background: rgba(0, 150, 255, 0.1);
+        }
+        
+        .position-option.selected {
+            border-color: #a0d2ff;
+            background: rgba(0, 150, 255, 0.2);
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background: #1a1a2e;
+            border-radius: 15px;
+            width: 90%;
             max-width: 600px;
             max-height: 80vh;
             overflow-y: auto;
